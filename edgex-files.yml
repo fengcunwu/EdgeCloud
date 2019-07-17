@@ -1,0 +1,38 @@
+apiVersion: v1 
+kind: Deployment 
+metadata: 
+  name: edgex-files 
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: edgex-files
+    spec: 
+      nodeSelector: 
+        hostpath: "yes"
+      containers:
+      - imgaes: edgexfoundry/docker-edgex-volume:1.0.0 
+        name: edgex-files 
+        volumesMounts: 
+        - mountPath: /data/db
+          name: db
+        - mountPath: /edgex/logs 
+          name: logs 
+        - mountPath: /consul/config
+          name: config
+        - mountPath: /consul/data 
+          name: data 
+      volumes: 
+      - name: db 
+        hostPath:
+          path: "./VolumesData/db/edgex-files-db"
+      - name: logs  
+        hostPath:
+          path: "./VolumesData/logs/edgex-files-logs" 
+      - name: config  
+        hostPath:
+          path: "./VolumesData/config/edgex-files-config" 
+      - name: data  
+        hostPath:
+          path: "./VolumesData/data/edgex-files-data" 
