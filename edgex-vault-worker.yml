@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment  
+metadata: 
+  name: edgex-vault-worker 
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: edgex-vault-worker 
+    spec: 
+      nodeSelector: 
+        run: "EdgeXFoundry"
+      containers:
+      - image: edgexfoundry/docker-edgex-vault-worker-go:1.0.0
+        name: edgex-vault-worker 
+        volumeMounts: 
+        - mountPath: /vault/config
+          name: config 
+      volumes: 
+      - name: config 
+        hostPath:
+          path: "VolumesData" 
