@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment  
+metadata: 
+  name: edgex-vault 
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: edgex-vault
+    spec: 
+      nodeSelector: 
+        run: "EdgeXFoundry"
+      containers:
+      - image: edgexfoundry/docker-edgex-vault:1.0.0
+        name: edgex-vault  
+        ports:
+        - containerPort: 8200
+          name: port8200 
+        volumeMounts: 
+        - mountPath: /vault/config
+          name: config 
+        - mountPath: /vault/file
+          name: file
+        - mountPath: /vault/logs
+          name: logs 
+      volumes: 
+      - name: config 
+        hostPath:
+          path: "VolumesData" 
+      - name: file 
+        hostPath:
+          path: "VolumesData" 
+      - name: logs  
+        hostPath:
+          path: "VolumesData" 

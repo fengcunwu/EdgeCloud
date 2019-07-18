@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment  
+metadata: 
+  name: kong 
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: kong
+    spec: 
+      nodeSelector: 
+        run: "EdgeXFoundry"
+      containers:
+      - image: "kong:1.0.3"
+        name: kong
+        ports:
+        - containerPort: 8000
+          name: port8000 
+        - containerPort: 8001
+          name: port8001 
+        - containerPort: 8443
+          name: port8443 
+        - containerPort: 8444
+          name: port8444 
+        args:  
+          - '-KONG_DATABASE=postgres'
+          - '-KONG_PG_HOST=kong-db'
+          - '-KONG_PROXY_ACCESS_LOG=/dev/stdout'
+          - '-KONG_ADMIN_ACCESS_LOG=/dev/stdout'
+          - '-KONG_PROXY_ERROR_LOG=/dev/stderr'
+          - '-KONG_ADMIN_ERROR_LOG=/dev/stderr'
+          - '-KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl'

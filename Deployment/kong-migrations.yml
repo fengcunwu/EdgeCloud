@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment  
+metadata: 
+  name: kong-migrations 
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: kong-migrations
+    spec: 
+      nodeSelector: 
+        run: "EdgeXFoundry"
+      containers:
+      - image: "kong:1.0.3"
+        name: kong-migrations  
+        env:
+          - name: KONG_DATABASE
+            value: postgres 
+          - name: KONG_PG_HOST
+            value: kong-db

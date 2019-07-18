@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment  
+metadata: 
+  name: edgex-core-consul 
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: edgex-core-consul 
+    spec: 
+      nodeSelector: 
+        run: "EdgeXFoundry"
+      containers:
+      - image: consul:1.3.1
+        name: edgex-core-consul  
+        ports:
+        - containerPort: 8400
+          name: port8400 
+        - containerPort: 8500
+          name: port8500 
+        - containerPort: 8600
+          name: port8600 
+        volumeMounts: 
+        - mountPath: /data/db
+          name: db
+        - mountPath: /edgex/logs 
+          name: logs 
+        - mountPath: /consul/config
+          name: config
+        - mountPath: /consul/data 
+          name: data 
+      volumes: 
+      - name: db 
+        hostPath:
+          path: "VolumesData"
+      - name: logs  
+        hostPath:
+          path: "VolumesData" 
+      - name: config  
+        hostPath:
+          path: "VolumesData" 
+      - name: data  
+        hostPath:
+          path: "VolumesData" 

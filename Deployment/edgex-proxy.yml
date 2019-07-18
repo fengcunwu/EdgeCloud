@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment  
+metadata: 
+  name: edgex-proxy
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: edgex-proxy
+    spec: 
+      nodeSelector: 
+        run: "EdgeXFoundry"
+      containers:
+      - image: "edgexfoundry/docker-edgex-proxy-go:1.0.0" 
+        name: edgex-proxy 
+        volumeMounts: 
+        - mountPath: /vault/config 
+          name: vault-config  
+      volumes: 
+      - name: vault-config  
+        hostPath:
+          path: "VolumesData" 

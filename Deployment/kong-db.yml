@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment  
+metadata: 
+  name: kong-db 
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: kong-db 
+    spec: 
+      nodeSelector: 
+        run: "EdgeXFoundry"
+      containers:
+      - image: "postgres:9.6"
+        name: kong-db  
+        ports:
+        - containerPort: 5432
+          name: port5432

@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment  
+metadata: 
+  name: edgex-core-config-seed  
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        run: edgex-core-config-seed 
+    spec: 
+      nodeSelector: 
+        run: "EdgeXFoundry"
+      containers:
+      - image: edgexfoundry/docker-core-config-seed-go:1.0.0
+        name: edgex-core-config-seed 
+        volumeMounts: 
+        - mountPath: /data/db
+          name: db
+        - mountPath: /edgex/logs 
+          name: logs 
+        - mountPath: /consul/config
+          name: config
+        - mountPath: /consul/data 
+          name: data 
+      volumes: 
+      - name: db 
+        hostPath:
+          path: "VolumesData"
+      - name: logs  
+        hostPath:
+          path: "VolumesData" 
+      - name: config  
+        hostPath:
+          path: "VolumesData" 
+      - name: data  
+        hostPath:
+          path: "VolumesData" 
